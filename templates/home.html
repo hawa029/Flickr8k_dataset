@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block header %}
+
+{% endblock %} {% block content %}
+	<div id="index-banner" class="">
+		
+		  <div class="container">
+			<br><br>
+			<div class="row center home">
+			  <h3 class="header col s12 ">Charger une image <br> que vous voulez annoter</h3>
+			</div>
+			<br><br>
+			<div class="row center">
+				<form method="POST" action="{{ url_for('upload')}}" enctype="multipart/form-data">
+						<div class="file-field input-field upload-barre">
+							<div class="file-path-wrapper" style="width: 70%;">
+								<input class="file-path validate" type="text" placeholder="Votre image ici">
+							  </div>
+							<div style="color:#750c0c; padding-right: 10px; padding-top: 10px;">
+								<input type="file" name="file">
+								<i class="small material-icons">camera_alt</i>
+							</div>						
+						</div>
+						<div class="row">
+								<button type="submit" class="btn-large waves-effect waves-light " style="background-color: #750c0c;">Envoyer</button>
+						</div>
+				  </form>
+			</div>
+			<br><br>
+		  </div>
+	  </div> 
+<br><br>
+{% endblock %}

@@ -2,12 +2,8 @@ import tensorflow as tf
 from PIL import Image, ImageDraw
 
 
-
-
-
-
 # Charger le modèle
-model = tf.keras.models.load_model('path/to/model.h5')
+model = tf.keras.models.load_model('VGG19-model-ep004.h5')
 
 # Définir une fonction pour annoter une image
 def annotate_image(image_path):
@@ -40,3 +36,27 @@ def save_annotated_image(image_path, description):
     
     # Enregistrer l'image
     img.save(image_path)
+
+
+
+    def predict_caption(image):
+
+        '''
+        Prédiction de la caption.
+        '''
+        image = Img.preprocess_predict_image(image)
+        image = image.reshape((1,image.shape[0]))
+
+        in_text = 'startseq'
+
+        for iword in range(Train.maxlen):
+            sequence = tokenizer.texts_to_sequences([in_text])[0]
+            sequence = pad_sequences([sequence],maxlen=22)
+            
+            yhat = model.predict([image,sequence],verbose=0)
+            yhat = np.argmax(yhat)
+            
+            newword = tokenizer.index_word[yhat]
+            in_text += " " + newword
+            if newword == "endseq":
+                break

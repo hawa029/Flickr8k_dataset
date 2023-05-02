@@ -11,6 +11,7 @@
 			<br><br>
 			<div class="row center">
 				<form method="POST" action="{{ url_for('upload')}}" enctype="multipart/form-data">
+					<!--Barre de chargement de l'image-->
 						<div class="file-field input-field upload-barre">
 							<div class="file-path-wrapper" style="width: 70%;">
 								<input class="file-path validate" type="text" placeholder="Votre image ici">
@@ -21,6 +22,7 @@
 							</div>						
 						</div>
 						<div class="row">
+							<!--Bouton d'envoi et validation du formulaire -->
 								<button type="submit" class="btn-large waves-effect waves-light " style="background-color: #750c0c;">Envoyer</button>
 						</div>
 				  </form>

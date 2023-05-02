@@ -16,16 +16,19 @@
   <div class="container pt-60">
 	<div class="row">
 	  	<div class="col s6" style="width: 500; height: 300;">
+			<!-- Cadre de l'image chargée depuis l'ordinateur -->
 			<img src="{{ filename }}" alt="image chargée" class="responsive-img">
 	  	</div>
 		  <div class="col s6" style="padding-top: 15%;">
 			<div class="row">
 				<form method="POST" action="{{ url_for('delete_image', filename=filename)}}">
-					<button class="btn-large waves-effect waves-light"  type="submit"  style="background-color: #750c0c;">Modifier</button>
+					<!--Bouton de suppression-->
+					<button class="btn-large waves-effect waves-light"  type="submit"  style="background-color: #750c0c;">Supprimer</button>
 				</form>
 			</div>
 			<div class="row">
 				<form method="POST" action="{{ url_for('annotate', filename=filename)}}">
+					<!--Bouton d'annotation-->
 					<button class="btn-large waves-effect waves-light" href="#modal1" type="submit" style="background-color: #750c0c;">Annoter</button>
 				</form>
 			</div>

@@ -13,21 +13,19 @@
   </div>
   <div class="container">
 	<div class="row center">
+		<!--Cadre de l'image annotée-->
 		<img src="data:image/jpg;base64,{{ img_path }}" alt="image annotée" class="responsive-img"  style="width: 300; height: 150;">
 	  <br>
 	</div>
 	<div class="row center">
-		<h4>{{  desc }}</h4>
+		<!--Description de l'image-->
+		<h4>Description de l'image :</h4>
+		<h5>{{ desc }}</h5>
 	</div>
 	<div class="row center">
-		<div class="col s6">
+			<!--Bouton de retour à l'accueil-->
 			<a href="{{ url_for('home')}}"><button class="btn-large waves-effect waves-light"  type="submit"  style="background-color: #750c0c;">Accueil</button></a>
-		</div>
-		<div class="col s6">
-            <form action="" method="GET">
-                <button class="btn-large waves-effect waves-light"  type="submit"  style="background-color: #750c0c;">Exporter</button>
-            </form>
-		</div>
+	
   </div>
   </div>
 </div>

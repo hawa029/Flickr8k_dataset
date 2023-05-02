@@ -79,25 +79,16 @@ def delete_image(filename):
 @app.route('/annotate/<filename>', methods=['GET', 'POST'])
 def annotate(filename):
     if request.method == 'POST':
-        # Traiter l'image avec le modèle de prédiction
-      
-
         # Rediriger vers la page de visualisation de l'annotation
         return redirect(url_for('view_annotation', filename=filename))
     return render_template('annotate.html', filename=filename)
 
 
-# chargement du model VGG19
-model = load_model('VGG19-model-ep004.h5')
-# load the tokenizer
-tokenizer = load(open('tokenizer.joblib', 'rb'))
-#path = os.path.join(app.config['UPLOAD_FOLDER'])
-
 # Définir la route pour la visualisation de l'image annotée
 @app.route('/view_annotation/<filename>', methods=['GET'])
 def view_annotation(filename):
 
-    # Récuperer le chemin de l'image
+    # Récuperation du chemin de l'image
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
     # Lecture de l'image binaire depuis le fichier
@@ -107,17 +98,19 @@ def view_annotation(filename):
     # Conversion du binaire en string
     img_data = base64.b64encode(img_bytes).decode()
     
-    # load the tokenizer
+    # chargement du tokenizer
     tokenizer = load(open('tokenizer.joblib', 'rb'))
-    # pre-define the max sequence length (from training)
+    # On définit la longueur maximale de la séquence
     max_length = 30
-    # load the model
+    # On charge le modèle entrainé précédemment
     model = load_model('VGG19-model-ep004.h5')
-    # load and prepare the photograph
+    # chargement et préparation de la photo
     photo = extract_features(path)
-    # generate description
+    # generation d'une légende
     description = generate_desc(model, tokenizer, photo, max_length)
 
+
+    # on enlève les mots qui annoncent le début et la fin de la séquence
     description =  description.replace("startseq ", "").replace(" endseq", "")
 
     return render_template('view_annotation.html', img_path=img_data, desc=description)
@@ -133,36 +126,35 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-##################################################################
 
-# extract features from each photo in the directory
+# extraction de features
 def extract_features(filename):
-    # load the model
+    # chargement du modèle
     model = VGG19()
-     # re-structure the model
+     # restructuration du modèle pour l'adapter au traitement
     model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
-    # load the photo
+    # chargement de l'image
     image = load_img(filename, target_size=(224, 224))
-    # convert the image pixels to a numpy array
+    # conversion de l'image en tableau numpy
     image = img_to_array(image)
-    # reshape data for the model
+    # reshape des données pour le modèle
     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-    # prepare the image for the VGG model
+    # preparation de l'image pour le VGG
     image = preprocess_input(image)
-    # get features
+    # obtention des features
     feature = model.predict(image, verbose=0)
     return feature
 
-# map an integer to a word
+# mapping d'un integer de mots
 def word_for_id(integer, tokenizer):
     for word, index in tokenizer.word_index.items():
         if index == integer:
             return word
     return None
 
-# generate a description for an image
+# generation d'une légende pour l'image
 def generate_desc(model, tokenizer, photo, max_length):
-    # seed the generation process
+    # processus de génération de légende
     in_text = 'startseq'
     # iterate over the whole length of the sequence
     for i in range(max_length):
@@ -189,7 +181,6 @@ def generate_desc(model, tokenizer, photo, max_length):
 
 
 
-# Démarrage de l'application Flask
 if __name__ == '__main__':
     app.run(debug=True)
 

@@ -1,5 +1,5 @@
 # Import des bibliothèques nécessaires
-from flask import Flask, render_template, request, redirect, url_for, send_file, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from keras.models import load_model, Model
 from keras.applications.vgg19 import VGG19
@@ -9,7 +9,9 @@ from keras.applications.vgg19 import preprocess_input
 from keras.utils import pad_sequences
 from numpy import argmax
 from joblib import load
-import numpy as np
+import pyttsx3
+import time
+
 
 import base64
 import os
@@ -109,11 +111,31 @@ def view_annotation(filename):
     # generation d'une légende
     description = generate_desc(model, tokenizer, photo, max_length)
 
-
     # on enlève les mots qui annoncent le début et la fin de la séquence
     description =  description.replace("startseq ", "").replace(" endseq", "")
+    
+    # code pour la traduction française
+    from translate import Translator
+ 
+    # Create a translator object
+    translator = Translator(from_lang="en", to_lang="fr")
+ 
+    # Translate a piece of text
+    translation = translator.translate(description)
 
-    return render_template('view_annotation.html', img_path=img_data, desc=description)
+    # code pour la synthèse vocale
+    eng = pyttsx3.init()
+    voice = eng.getProperty('voices') #get the available voices
+    rate = eng.getProperty('rate')
+    eng.setProperty('voice', voice[0].id) #set the voice to index 0 for male voice
+    # eng.setProperty('voice', voice[1].id) #changing voice to index 1 for female voice
+    eng.setProperty('rate', rate-50)
+    eng.say(translation)
+    eng.runAndWait()
+        
+
+    return render_template('view_annotation.html', img_path=img_data, desc=translation)
+
 
 
 # Définir la route pour la page d'aide

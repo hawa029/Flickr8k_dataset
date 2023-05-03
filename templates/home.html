@@ -12,12 +12,12 @@
 			<div class="row center">
 				<form method="POST" action="{{ url_for('upload')}}" enctype="multipart/form-data">
 					<!--Barre de chargement de l'image-->
-						<div class="file-field input-field upload-barre">
+						<div class="file-field input-field upload-barre" required>
 							<div class="file-path-wrapper" style="width: 70%;">
 								<input class="file-path validate" type="text" placeholder="Votre image ici">
 							  </div>
-							<div style="color:#750c0c; padding-right: 10px; padding-top: 10px;">
-								<input type="file" name="file">
+							<div class="barre-text">
+								<input type="file" name="file" required>
 								<i class="small material-icons">camera_alt</i>
 							</div>						
 						</div>

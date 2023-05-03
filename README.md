@@ -1,6 +1,6 @@
 # Projet Annotation d'image - NLP & Computer Vision
 
-Using  Flask
+Using  Python, Flask and materialize CSS
 
 ## Dataset
 
